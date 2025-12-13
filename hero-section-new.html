@@ -1,0 +1,109 @@
+<!-- Hero Section - New Design -->\n <section class="hero-section-new" id="home">
+    <!-- Left Sidebar -->
+    <div class="hero-sidebar">
+        <div class="sidebar-content">
+            <h1 class="sidebar-title">M3M GIC Gurugram</h1>
+            <p class="sidebar-subtitle">Integrated 150-200 Acres Mixed-Use Township</p>
+
+            <a href="tel:+919607813823" class="btn-call-sidebar">
+                <i class="fas fa-phone-alt"></i>
+                Call : +91 9607813823
+            </a>
+
+            <div class="key-highlights">
+                <h3>KEY HIGHLIGHTS</h3>
+                <ul class="highlights-list">
+                    <li><i class="fas fa-check"></i> Live-Work-Unwind Urban Ecosystem</li>
+                    <li><i class="fas fa-check"></i> Data Centers & Innovation Parks</li>
+                    <li><i class="fas fa-check"></i> EV Hubs & Green Mobility</li>
+                    <li><i class="fas fa-check"></i> Forest Living with Urban Forest</li>
+                    <li><i class="fas fa-check"></i> Low-Emission Clean Industry Hub</li>
+                    <li><i class="fas fa-check"></i> Near Aravalli & Sultanpur Bird Sanctuary</li>
+                    <li><i class="fas fa-check"></i> Borders 3 Expressways</li>
+                    <li><i class="fas fa-check"></i> Close to Adani Logistics Park ICD</li>
+                    <li><i class="fas fa-check"></i> 20 Min from Delhi Airport</li>
+                </ul>
+            </div>
+
+            <div class="launch-offer">
+                <p class="offer-text">Launch Offer:</p>
+                <p class="offer-details">300 RERA-Approved Plots - Phase 1</p>
+                <p class="price-tag">₹7,200 Cr<sup>*</sup> Investment</p>
+            </div>
+
+            <button class="btn-enquire-sidebar"
+                onclick="document.getElementById('enquiry-section').scrollIntoView({behavior: 'smooth'})">
+                Enquire Now
+            </button>
+        </div>
+    </div>
+
+    <!-- Image Slider Area -->
+    <div class="hero-image-slider">
+        <div class="slider-images">
+            <div class="slide active" style="background-image: url('hero_township_view_1765650571102.png');"></div>
+            <div class="slide" style="background-image: url('township_overview_render_1765650586710.png');"></div>
+            <div class="slide" style="background-image: url('green_spaces_amenities_1765650602708.png');"></div>
+        </div>
+
+        <button class="carousel-nav prev" onclick="changeSlide(-1)">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="carousel-nav next" onclick="changeSlide(1)">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+
+        <div class="carousel-dots">
+            <span class="dot active" onclick="currentSlide(0)"></span>
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+        </div>
+    </div>
+</section>
+
+<!-- Enquiry Form Section -->
+<section class="enquiry-section" id="enquiry-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>Get Exclusive Details</h2>
+            <p>Register now for best prices & launch offers</p>
+        </div>
+        <div class="enquiry-form-wrapper">
+            <div class="hero-form-card enhanced">
+                <div class="form-header">
+                    <i class="fas fa-home form-icon"></i>
+                    <h3>Book Your Investment Plot</h3>
+                    <p class="form-subtitle">Get Exclusive Offers & Site Visit</p>
+                </div>
+                <form class="enquiry-form" id="hero-form">
+                    <div class="form-row-group">
+                        <div class="form-group">
+                            <label><i class="fas fa-user"></i></label>
+                            <input type="text" name="name" placeholder="Your Name *" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-phone"></i></label>
+                            <input type="tel" name="phone" placeholder="Phone Number *" pattern="[0-9]{10}" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-envelope"></i></label>
+                        <input type="email" name="email" placeholder="Email Address">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-comment"></i></label>
+                        <textarea name="message" placeholder="Your Message (Optional)" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit enhanced">
+                        <span>Submit Enquiry</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <div class="form-trust">
+                        <i class="fas fa-shield-alt"></i>
+                        <p>Your information is 100% secure with us</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
