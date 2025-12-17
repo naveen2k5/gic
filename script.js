@@ -19,7 +19,7 @@ const faqItems = document.querySelectorAll('.faq-item');
 
 faqItems.forEach(item => {
     const question = item.querySelector('.faq-question');
-    
+
     question.addEventListener('click', () => {
         // Close other open items
         faqItems.forEach(otherItem => {
@@ -27,7 +27,7 @@ faqItems.forEach(item => {
                 otherItem.classList.remove('active');
             }
         });
-        
+
         // Toggle current item
         item.classList.toggle('active');
     });
@@ -57,21 +57,21 @@ const contactForm = document.getElementById('contact-form');
 
 // Hero Form Submission
 if (heroForm) {
-    heroForm.addEventListener('submit', function(e) {
+    heroForm.addEventListener('submit', function (e) {
         e.preventDefault();
-        
+
         const formData = new FormData(this);
         const data = Object.fromEntries(formData);
-        
+
         // Here you would typically send data to your backend
         console.log('Hero Form Data:', data);
-        
+
         // Show success message
         alert('Thank you for your enquiry! Our team will contact you shortly.');
-        
+
         // Reset form
         this.reset();
-        
+
         // In production, you would send this to your backend:
         // fetch('/api/submit-enquiry', {
         //     method: 'POST',
@@ -89,22 +89,73 @@ if (heroForm) {
     });
 }
 
+// Initialize Supabase
+const supabaseUrl = 'https://ruvywwcghcppvsjdbxdp.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ1dnl3d2NnaGNwcHZzamRieGRwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU5ODI3NDgsImV4cCI6MjA4MTU1ODc0OH0.LESKKK61q4EmozMTwtFCUINchUYYpqv6mONKFwu-PJ4';
+const { createClient } = supabase;
+const supabaseClient = createClient(supabaseUrl, supabaseKey);
+
 // Contact Form Submission
 if (contactForm) {
-    contactForm.addEventListener('submit', function(e) {
+    contactForm.addEventListener('submit', async function (e) {
         e.preventDefault();
-        
+
+        const submitBtn = this.querySelector('.btn-submit-new') || this.querySelector('.btn-submit');
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        submitBtn.disabled = true;
+
         const formData = new FormData(this);
         const data = Object.fromEntries(formData);
-        
-        // Here you would typically send data to your backend
-        console.log('Contact Form Data:', data);
-        
-        // Show success message
-        alert('Thank you for contacting us! We will get back to you soon.');
-        
-        // Reset form
-        this.reset();
+
+        try {
+            const { error } = await supabaseClient
+                .from('gic_leads')
+                .insert([
+                    {
+                        name: data.name,
+                        phone: data.phone,
+                        email: data.email || null,
+                        property_type: data['property-type'] || null,
+                        message: data.message || null
+                    }
+                ]);
+
+            if (error) throw error;
+
+            // Show success message
+            this.reset();
+
+            // Create and show thank you message
+            const formContainer = this.closest('.new-contact-card');
+            const thankYouMessage = document.createElement('div');
+            thankYouMessage.className = 'thank-you-message';
+            thankYouMessage.innerHTML = `
+                <div class="thank-you-content">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Thank You!</h3>
+                    <p>We have received your enquiry.</p>
+                    <p>Our team will contact you soon.</p>
+                </div>
+            `;
+
+            // Hide form and show message
+            this.style.display = 'none';
+            formContainer.appendChild(thankYouMessage);
+
+            // Reset after 5 seconds
+            setTimeout(() => {
+                thankYouMessage.remove();
+                this.style.display = 'block';
+            }, 5000);
+
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert('Sorry, there was an error submitting your request. Please try again.');
+        } finally {
+            submitBtn.innerHTML = originalBtnText;
+            submitBtn.disabled = false;
+        }
     });
 }
 
@@ -139,10 +190,10 @@ animatedElements.forEach(el => {
 const phoneInputs = document.querySelectorAll('input[type="tel"]');
 
 phoneInputs.forEach(input => {
-    input.addEventListener('input', function(e) {
+    input.addEventListener('input', function (e) {
         // Remove non-numeric characters
         this.value = this.value.replace(/[^0-9]/g, '');
-        
+
         // Limit to 10 digits
         if (this.value.length > 10) {
             this.value = this.value.slice(0, 10);
@@ -169,7 +220,7 @@ let lastScroll = 0;
 
 window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
-    
+
     if (currentScroll > 100) {
         header.style.padding = '10px 0';
         header.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
@@ -177,7 +228,7 @@ window.addEventListener('scroll', () => {
         header.style.padding = '15px 0';
         header.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
     }
-    
+
     lastScroll = currentScroll;
 });
 
@@ -185,7 +236,7 @@ window.addEventListener('scroll', () => {
 const galleryItems = document.querySelectorAll('.gallery-item');
 
 galleryItems.forEach(item => {
-    item.addEventListener('click', function() {
+    item.addEventListener('click', function () {
         const img = this.querySelector('img');
         const lightbox = document.createElement('div');
         lightbox.className = 'lightbox';
@@ -195,7 +246,7 @@ galleryItems.forEach(item => {
                 <img src="${img.src}" alt="${img.alt}">
             </div>
         `;
-        
+
         // Add lightbox styles
         lightbox.style.cssText = `
             position: fixed;
@@ -210,14 +261,14 @@ galleryItems.forEach(item => {
             z-index: 9999;
             cursor: pointer;
         `;
-        
+
         const content = lightbox.querySelector('.lightbox-content');
         content.style.cssText = `
             position: relative;
             max-width: 90%;
             max-height: 90%;
         `;
-        
+
         const close = lightbox.querySelector('.lightbox-close');
         close.style.cssText = `
             position: absolute;
@@ -228,22 +279,22 @@ galleryItems.forEach(item => {
             font-weight: bold;
             cursor: pointer;
         `;
-        
+
         const lightboxImg = lightbox.querySelector('img');
         lightboxImg.style.cssText = `
             max-width: 100%;
             max-height: 90vh;
             border-radius: 8px;
         `;
-        
+
         document.body.appendChild(lightbox);
-        
+
         // Close lightbox on click
-        lightbox.addEventListener('click', function() {
+        lightbox.addEventListener('click', function () {
             document.body.removeChild(lightbox);
         });
-        
-        close.addEventListener('click', function(e) {
+
+        close.addEventListener('click', function (e) {
             e.stopPropagation();
             document.body.removeChild(lightbox);
         });
@@ -254,12 +305,12 @@ galleryItems.forEach(item => {
 const downloadBtn = document.querySelector('.btn-download');
 
 if (downloadBtn) {
-    downloadBtn.addEventListener('click', function(e) {
+    downloadBtn.addEventListener('click', function (e) {
         e.preventDefault();
-        
+
         // In production, this would trigger actual PDF download
         alert('Thank you for your interest! Please fill the enquiry form to receive the brochure via email.');
-        
+
         // Scroll to enquiry form
         document.getElementById('enquiry-form').scrollIntoView({
             behavior: 'smooth'
@@ -271,11 +322,11 @@ if (downloadBtn) {
 const floorplanBtns = document.querySelectorAll('.btn-floorplan');
 
 floorplanBtns.forEach(btn => {
-    btn.addEventListener('click', function(e) {
+    btn.addEventListener('click', function (e) {
         e.preventDefault();
-        
+
         alert('Please fill the enquiry form to receive detailed floor plans via email.');
-        
+
         // Scroll to enquiry form
         document.getElementById('enquiry-form').scrollIntoView({
             behavior: 'smooth'

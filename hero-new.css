@@ -317,3 +317,7 @@
         bottom: 20px;
     }
 }
+/* Add margin between header and hero section */
+.hero-section-new {
+    margin-top: 80px;
+}
