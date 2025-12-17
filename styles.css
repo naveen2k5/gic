@@ -898,38 +898,44 @@ img {
     box-shadow: var(--shadow);
 }
 
-/* Floor Plan Section */
+
+/* Floor Plans Section */
 .floorplan-section {
     padding: 100px 0;
+    background: var(--white);
 }
 
 .floorplan-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 40px;
 }
 
 .floorplan-card {
     background: var(--white);
-    border-radius: 12px;
+    border-radius: 15px;
     overflow: hidden;
     box-shadow: var(--shadow);
     transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
 }
 
 .floorplan-card:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
 }
 
 .floorplan-card img {
     width: 100%;
-    height: 300px;
-    object-fit: cover;
+    height: auto;
+    max-height: 400px;
+    object-fit: contain;
+    background: #f8f9fa;
 }
 
 .floorplan-info {
-    padding: 30px;
+    padding: 25px;
+    text-align: center;
 }
 
 .floorplan-info h3 {
@@ -1012,22 +1018,6 @@ img {
 
 .developer-content {
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 60px;
-    align-items: center;
-}
-
-.developer-logo {
-    text-align: center;
-    padding: 60px 40px;
-    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-    border-radius: 15px;
-    color: var(--white);
-}
-
-.developer-logo h2 {
-    font-size: 5rem;
-    color: var(--white);
     margin-bottom: 10px;
 }
 
@@ -1493,5 +1483,47 @@ img {
     .highlights-grid,
     .amenities-grid {
         grid-template-columns: 1fr;
+    }
+}/* Overview Section */
+.overview-section {
+    padding: 80px 0;
+    background: var(--white);
+}
+
+.overview-content {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    justify-content: space-between;
+}
+
+.overview-text {
+    flex: 1;
+}
+
+.overview-image {
+    flex: 0 0 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.overview-image img {
+    width: 100%;
+    height: auto;
+    max-width: 300px;
+    object-fit: contain;
+}
+
+@media (max-width: 991px) {
+    .overview-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .overview-image {
+        flex: 0 0 auto;
+        width: 100%;
+        margin-top: 30px;
     }
 }
