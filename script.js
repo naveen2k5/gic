@@ -95,7 +95,128 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const { createClient } = supabase;
 const supabaseClient = createClient(supabaseUrl, supabaseKey);
 
-// Contact Form Submission
+// Monitor External Form Submission (systeme.io)
+// Function to show thank you message
+function showThankYouMessage() {
+    const leadFormContainer = document.getElementById('lead-form');
+    if (!leadFormContainer) return;
+
+    // Create thank you overlay
+    const thankYouOverlay = document.createElement('div');
+    thankYouOverlay.className = 'thank-you-overlay';
+    thankYouOverlay.innerHTML = `
+        <div class="thank-you-card">
+            <div class="thank-you-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2>Thank You!</h2>
+            <p class="thank-you-main">Your enquiry has been submitted successfully.</p>
+            <p class="thank-you-sub">Our team will contact you within 24 hours.</p>
+            <button class="btn-close-thankyou" onclick="closeThankYouMessage()">
+                <i class="fas fa-times"></i> Close
+            </button>
+        </div>
+    `;
+
+    // Add styles
+    thankYouOverlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 99999;
+        animation: fadeIn 0.3s ease;
+    `;
+
+    document.body.appendChild(thankYouOverlay);
+
+    // Auto-close after 8 seconds
+    setTimeout(() => {
+        closeThankYouMessage();
+    }, 8000);
+}
+
+// Function to close thank you message
+function closeThankYouMessage() {
+    const overlay = document.querySelector('.thank-you-overlay');
+    if (overlay) {
+        overlay.style.animation = 'fadeOut 0.3s ease';
+        setTimeout(() => {
+            overlay.remove();
+        }, 300);
+    }
+}
+
+// Make function globally available
+window.closeThankYouMessage = closeThankYouMessage;
+
+// Monitor for form submission using MutationObserver
+function monitorExternalForm() {
+    const leadFormContainer = document.getElementById('lead-form');
+    if (!leadFormContainer) {
+        // Retry after a short delay if form not loaded yet
+        setTimeout(monitorExternalForm, 1000);
+        return;
+    }
+
+    // Observer for DOM changes in the form container
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+                if (node.nodeType === 1) { // Element node
+                    // Check for success message indicators
+                    const successIndicators = [
+                        'thank',
+                        'success',
+                        'submitted',
+                        'received',
+                        'merci',
+                        'gracias'
+                    ];
+
+                    const nodeText = node.textContent?.toLowerCase() || '';
+                    const hasSuccessMessage = successIndicators.some(indicator =>
+                        nodeText.includes(indicator)
+                    );
+
+                    if (hasSuccessMessage) {
+                        console.log('Form submission detected!');
+                        showThankYouMessage();
+                    }
+                }
+            });
+        });
+    });
+
+    // Start observing
+    observer.observe(leadFormContainer, {
+        childList: true,
+        subtree: true,
+        characterData: true
+    });
+
+    // Also listen for form submit events within the container
+    leadFormContainer.addEventListener('submit', (e) => {
+        // Wait a bit for the external form to process
+        setTimeout(() => {
+            showThankYouMessage();
+        }, 1500);
+    }, true);
+}
+
+// Initialize monitoring when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', monitorExternalForm);
+} else {
+    monitorExternalForm();
+}
+
+// Legacy Contact Form Submission (if exists)
 if (contactForm) {
     contactForm.addEventListener('submit', async function (e) {
         e.preventDefault();
@@ -125,29 +246,7 @@ if (contactForm) {
 
             // Show success message
             this.reset();
-
-            // Create and show thank you message
-            const formContainer = this.closest('.new-contact-card');
-            const thankYouMessage = document.createElement('div');
-            thankYouMessage.className = 'thank-you-message';
-            thankYouMessage.innerHTML = `
-                <div class="thank-you-content">
-                    <i class="fas fa-check-circle"></i>
-                    <h3>Thank You!</h3>
-                    <p>We have received your enquiry.</p>
-                    <p>Our team will contact you soon.</p>
-                </div>
-            `;
-
-            // Hide form and show message
-            this.style.display = 'none';
-            formContainer.appendChild(thankYouMessage);
-
-            // Reset after 5 seconds
-            setTimeout(() => {
-                thankYouMessage.remove();
-                this.style.display = 'block';
-            }, 5000);
+            showThankYouMessage();
 
         } catch (error) {
             console.error('Error submitting form:', error);

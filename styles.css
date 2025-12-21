@@ -1917,3 +1917,193 @@ img {
         opacity: 1;
     }
 }
+
+/* ===================================
+   Thank You Message Overlay Styles
+   ================================== */
+
+.thank-you-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+    animation: fadeIn 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.thank-you-card {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    padding: 60px 50px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.5s ease;
+    position: relative;
+}
+
+.thank-you-icon {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 30px;
+    background: linear-gradient(135deg, var(--success-color), #20c997);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: scaleIn 0.6s ease;
+}
+
+.thank-you-icon i {
+    font-size: 3.5rem;
+    color: var(--white);
+    animation: checkPulse 0.8s ease;
+}
+
+.thank-you-card h2 {
+    color: var(--primary-color);
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    animation: fadeInUp 0.7s ease;
+}
+
+.thank-you-main {
+    font-size: 1.2rem;
+    color: var(--text-dark);
+    font-weight: 500;
+    margin-bottom: 10px;
+    animation: fadeInUp 0.8s ease;
+}
+
+.thank-you-sub {
+    font-size: 1rem;
+    color: var(--text-light);
+    margin-bottom: 30px;
+    animation: fadeInUp 0.9s ease;
+}
+
+.btn-close-thankyou {
+    padding: 15px 40px;
+    background: linear-gradient(135deg, var(--secondary-color), #e6c04e);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+}
+
+.btn-close-thankyou:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(212, 175, 55, 0.5);
+    background: linear-gradient(135deg, #e6c04e, var(--secondary-color));
+}
+
+.btn-close-thankyou i {
+    transition: transform 0.3s ease;
+}
+
+.btn-close-thankyou:hover i {
+    transform: rotate(90deg);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes checkPulse {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Responsive Design for Thank You Message */
+@media (max-width: 768px) {
+    .thank-you-card {
+        padding: 40px 30px;
+        width: 95%;
+    }
+
+    .thank-you-icon {
+        width: 80px;
+        height: 80px;
+    }
+
+    .thank-you-icon i {
+        font-size: 2.5rem;
+    }
+
+    .thank-you-card h2 {
+        font-size: 2rem;
+    }
+
+    .thank-you-main {
+        font-size: 1.1rem;
+    }
+
+    .thank-you-sub {
+        font-size: 0.95rem;
+    }
+
+    .btn-close-thankyou {
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+}
